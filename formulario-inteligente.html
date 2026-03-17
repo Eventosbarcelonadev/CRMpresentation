@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicita un presupuesto — Eventos Barcelona</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #E87461;
+      --accent-light: #fdf0ee;
+      --dark: #1a1a1a;
+      --text: #333;
+      --gray: #666;
+      --light-gray: #f9f9f9;
+      --border: #e0e0e0;
+      --white: #fff;
+      --green: #2ecc71;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--light-gray);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-weight: 400;
+    }
+
+    /* === NAV === */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 80px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo img { height: 40px; width: auto; }
+
+    /* === DEMO BANNER === */
+    .demo-banner {
+      background: var(--dark);
+      color: #fff;
+      text-align: center;
+      padding: 10px 24px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    /* === FORM CONTAINER === */
+    .form-container {
+      max-width: 720px;
+      margin: 48px auto;
+      padding: 0 24px;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .form-header h1 {
+      font-size: 36px;
+      color: var(--dark);
+      margin-bottom: 12px;
+    }
+
+    .form-header p {
+      font-size: 16px;
+      color: var(--gray);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* === PROGRESS BAR === */
+    .progress-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 40px;
+    }
+
+    .progress-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .progress-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--border);
+      color: var(--gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .progress-dot.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .progress-dot.completed {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .progress-line {
+      width: 40px;
+      height: 2px;
+      background: var(--border);
+      align-self: center;
+    }
+
+    .progress-line.active {
+      background: var(--accent);
+    }
+
+    .progress-label {
+      font-size: 11px;
+      color: var(--gray);
+      display: none;
+    }
+
+    /* === FORM CARD === */
+    .form-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 48px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .step { display: none; }
+    .step.active { display: block; }
+
+    .step-title {
+      font-size: 24px;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .step-subtitle {
+      font-size: 14px;
+      color: var(--gray);
+      margin-bottom: 32px;
+    }
+
+    /* === FORM INPUTS === */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: var(--text);
+      transition: border-color 0.2s;
+      background: var(--white);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    /* === VISUAL SELECTORS (tipo evento) === */
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .option-card {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--white);
+    }
+
+    .option-card:hover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .option-card.selected {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .option-card .option-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .option-card .option-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* === SHOW CARDS (tipo espectaculo) === */
+    .show-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .show-card {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--white);
+    }
+
+    .show-card:hover {
+      border-color: var(--accent);
+    }
+
+    .show-card.selected {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+
+    .show-card-image {
+      height: 140px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .show-card-check {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+
+    .show-card.selected .show-card-check {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .show-card-body {
+      padding: 14px 16px;
+    }
+
+    .show-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .show-card-desc {
+      font-size: 12px;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    /* === BUDGET SELECTOR === */
+    .budget-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .budget-card {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .budget-card:hover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .budget-card.selected {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .budget-amount {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 22px;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .budget-desc {
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    /* === BUTTONS === */
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 32px;
+    }
+
+    .btn-next {
+      padding: 14px 36px;
+      background: var(--dark);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-next:hover { background: #333; }
+
+    .btn-back {
+      padding: 14px 24px;
+      background: none;
+      color: var(--gray);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .btn-back:hover { color: var(--text); }
+
+    .btn-submit {
+      padding: 16px 48px;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-submit:hover { background: #d4604f; }
+
+    /* === SUCCESS === */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 60px 40px;
+    }
+
+    .success-screen.active { display: block; }
+
+    .success-icon {
+      font-size: 64px;
+      margin-bottom: 24px;
+    }
+
+    .success-screen h2 {
+      font-size: 32px;
+      color: var(--dark);
+      margin-bottom: 12px;
+    }
+
+    .success-screen p {
+      font-size: 16px;
+      color: var(--gray);
+      max-width: 400px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .nav { padding: 16px 24px; }
+      .form-card { padding: 32px 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      .option-grid { grid-template-columns: repeat(2, 1fr); }
+      .show-grid { grid-template-columns: 1fr; }
+      .budget-grid { grid-template-columns: 1fr; }
+      .form-header h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-banner">
+    PROTOTIPO &mdash; Formulario inteligente que sustituiria al formulario actual de contacto
+  </div>
+
+  <div class="nav">
+    <div class="nav-logo">
+      <img src="https://www.eventosbarcelona.com/wp-content/uploads/2025/01/eventos-barcelona-logo-new.svg" alt="Eventos Barcelona">
+    </div>
+  </div>
+
+  <div class="form-container">
+
+    <div class="form-header">
+      <h1>Solicita un presupuesto</h1>
+      <p>Cuentanos sobre tu evento y te preparamos una propuesta personalizada en menos de 24 horas.</p>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="progress-bar">
+      <div class="progress-step">
+        <div class="progress-dot active" id="dot-1">1</div>
+      </div>
+      <div class="progress-line" id="line-1"></div>
+      <div class="progress-step">
+        <div class="progress-dot" id="dot-2">2</div>
+      </div>
+      <div class="progress-line" id="line-2"></div>
+      <div class="progress-step">
+        <div class="progress-dot" id="dot-3">3</div>
+      </div>
+      <div class="progress-line" id="line-3"></div>
+      <div class="progress-step">
+        <div class="progress-dot" id="dot-4">4</div>
+      </div>
+      <div class="progress-line" id="line-4"></div>
+      <div class="progress-step">
+        <div class="progress-dot" id="dot-5">5</div>
+      </div>
+    </div>
+
+    <div class="form-card">
+
+      <!-- PASO 1: Datos basicos -->
+      <div class="step active" id="step-1">
+        <h2 class="step-title">Tus datos de contacto</h2>
+        <p class="step-subtitle">Para poder enviarte la propuesta personalizada.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" placeholder="Tu nombre completo">
+          </div>
+          <div class="form-group">
+            <label>Empresa</label>
+            <input type="text" placeholder="Nombre de la empresa">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Correo electronico</label>
+            <input type="email" placeholder="tu@empresa.com">
+          </div>
+          <div class="form-group">
+            <label>Telefono</label>
+            <input type="tel" placeholder="+34 600 000 000">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <div></div>
+          <button class="btn-next" onclick="goToStep(2)">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- PASO 2: Tipo de evento -->
+      <div class="step" id="step-2">
+        <h2 class="step-title">¿Que tipo de evento estas organizando?</h2>
+        <p class="step-subtitle">Selecciona el que mejor describa tu evento.</p>
+
+        <div class="option-grid">
+          <div class="option-card" onclick="selectOption(this, 'event-type')">
+            <span class="option-icon">&#127864;</span>
+            <span class="option-label">Cena de gala</span>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'event-type')">
+            <span class="option-icon">&#127775;</span>
+            <span class="option-label">Lanzamiento de producto</span>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'event-type')">
+            <span class="option-icon">&#127979;</span>
+            <span class="option-label">Convencion / Congreso</span>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'event-type')">
+            <span class="option-icon">&#127942;</span>
+            <span class="option-label">Entrega de premios</span>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'event-type')">
+            <span class="option-icon">&#127968;</span>
+            <span class="option-label">Family Day corporativo</span>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'event-type')">
+            <span class="option-icon">&#127881;</span>
+            <span class="option-label">Fiesta tematica</span>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'event-type')">
+            <span class="option-icon">&#9986;</span>
+            <span class="option-label">Inauguracion</span>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'event-type')">
+            <span class="option-icon">&#9917;</span>
+            <span class="option-label">Evento deportivo</span>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'event-type')">
+            <span class="option-icon">&#10067;</span>
+            <span class="option-label">Otro</span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-back" onclick="goToStep(1)">Atras</button>
+          <button class="btn-next" onclick="goToStep(3)">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- PASO 3: Tipo de espectaculo -->
+      <div class="step" id="step-3">
+        <h2 class="step-title">¿Que tipo de espectaculo te interesa?</h2>
+        <p class="step-subtitle">Puedes seleccionar varios. Si no estas seguro, selecciona la ultima opcion.</p>
+
+        <div class="show-grid">
+          <div class="show-card" onclick="toggleShow(this)">
+            <div class="show-card-image" style="background-image: url('https://images.unsplash.com/photo-1504680177321-2e6a879aac86?w=400&q=80');">
+              <div class="show-card-check">&#10003;</div>
+            </div>
+            <div class="show-card-body">
+              <div class="show-card-title">Shows visuales y Mapping</div>
+              <div class="show-card-desc">Hologramas, video mapping, danza con proyecciones</div>
+            </div>
+          </div>
+
+          <div class="show-card" onclick="toggleShow(this)">
+            <div class="show-card-image" style="background-image: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=80');">
+              <div class="show-card-check">&#10003;</div>
+            </div>
+            <div class="show-card-body">
+              <div class="show-card-title">Percusion y Musical</div>
+              <div class="show-card-desc">Water Drummers, percusion LED, violin laser, arpa laser</div>
+            </div>
+          </div>
+
+          <div class="show-card" onclick="toggleShow(this)">
+            <div class="show-card-image" style="background-image: url('https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=400&q=80');">
+              <div class="show-card-check">&#10003;</div>
+            </div>
+            <div class="show-card-body">
+              <div class="show-card-title">Danza</div>
+              <div class="show-card-desc">Flamenco, salsa, cabaret, ballet, hip-hop, bollywood</div>
+            </div>
+          </div>
+
+          <div class="show-card" onclick="toggleShow(this)">
+            <div class="show-card-image" style="background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=80');">
+              <div class="show-card-check">&#10003;</div>
+            </div>
+            <div class="show-card-body">
+              <div class="show-card-title">Luz y Laser</div>
+              <div class="show-card-desc">Laser shows, light painting, hula hoop LED</div>
+            </div>
+          </div>
+
+          <div class="show-card" onclick="toggleShow(this)">
+            <div class="show-card-image" style="background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&q=80');">
+              <div class="show-card-check">&#10003;</div>
+            </div>
+            <div class="show-card-body">
+              <div class="show-card-title">Acrobacias y Malabares</div>
+              <div class="show-card-desc">Malabares LED, danza aerea, acrobacias</div>
+            </div>
+          </div>
+
+          <div class="show-card" onclick="toggleShow(this)">
+            <div class="show-card-image" style="background-image: url('https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=400&q=80');">
+              <div class="show-card-check">&#10003;</div>
+            </div>
+            <div class="show-card-body">
+              <div class="show-card-title">Produccion tecnica</div>
+              <div class="show-card-desc">Iluminacion, sonido, pantallas LED, escenarios</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="show-card" onclick="toggleShow(this)" style="border: 2px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; text-align: center; margin-bottom: 16px; transition: all 0.2s; background: var(--white);">
+          <div class="show-card-body" style="padding: 0;">
+            <div class="show-card-title">No estoy seguro, quiero que me aconsejeis</div>
+            <div class="show-card-desc">Nuestro equipo te recomendara los mejores espectaculos para tu evento</div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-back" onclick="goToStep(2)">Atras</button>
+          <button class="btn-next" onclick="goToStep(4)">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- PASO 4: Detalles del evento -->
+      <div class="step" id="step-4">
+        <h2 class="step-title">Detalles de tu evento</h2>
+        <p class="step-subtitle">Cuanta mas informacion nos des, mejor sera la propuesta.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Fecha del evento</label>
+            <input type="date">
+          </div>
+          <div class="form-group">
+            <label>Numero de asistentes</label>
+            <input type="number" placeholder="Ej: 200">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Ciudad / Ubicacion</label>
+          <input type="text" placeholder="Ej: Barcelona, Hotel W">
+        </div>
+
+        <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Presupuesto aproximado</label>
+        <div class="budget-grid">
+          <div class="budget-card" onclick="selectOption(this, 'budget')">
+            <div class="budget-amount">&lt; 3.000&euro;</div>
+            <div class="budget-desc">Evento pequeno</div>
+          </div>
+          <div class="budget-card" onclick="selectOption(this, 'budget')">
+            <div class="budget-amount">3.000 - 6.000&euro;</div>
+            <div class="budget-desc">Evento mediano</div>
+          </div>
+          <div class="budget-card" onclick="selectOption(this, 'budget')">
+            <div class="budget-amount">6.000 - 12.000&euro;</div>
+            <div class="budget-desc">Evento grande</div>
+          </div>
+          <div class="budget-card" onclick="selectOption(this, 'budget')">
+            <div class="budget-amount">&gt; 12.000&euro;</div>
+            <div class="budget-desc">Gran produccion</div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-back" onclick="goToStep(3)">Atras</button>
+          <button class="btn-next" onclick="goToStep(5)">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- PASO 5: Comentarios -->
+      <div class="step" id="step-5">
+        <h2 class="step-title">¿Algo mas que debamos saber?</h2>
+        <p class="step-subtitle">Cuentanos cualquier detalle adicional sobre tu evento. Este paso es opcional.</p>
+
+        <div class="form-group">
+          <label>Comentarios adicionales</label>
+          <textarea placeholder="Ej: Queremos una tematica espacial, necesitamos que los artistas interactuen con los invitados durante la cena..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>¿Como nos has conocido?</label>
+          <select>
+            <option value="" disabled selected>Selecciona una opcion</option>
+            <option>Busqueda en Google</option>
+            <option>Recomendacion</option>
+            <option>Redes sociales</option>
+            <option>Evento anterior</option>
+            <option>Otro</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-back" onclick="goToStep(4)">Atras</button>
+          <button class="btn-submit" onclick="submitForm()">Enviar solicitud</button>
+        </div>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="success-screen" id="success">
+        <div class="success-icon">&#10004;&#65039;</div>
+        <h2>Solicitud recibida</h2>
+        <p>Nuestro equipo esta preparando tu propuesta personalizada. La recibiras en menos de 24 horas. Gracias por confiar en Eventos Barcelona.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function goToStep(n) {
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+      document.getElementById('step-' + n).classList.add('active');
+
+      for (let i = 1; i <= 5; i++) {
+        const dot = document.getElementById('dot-' + i);
+        const line = document.getElementById('line-' + (i - 1));
+        dot.classList.remove('active', 'completed');
+        if (i < n) {
+          dot.classList.add('completed');
+          dot.innerHTML = '&#10003;';
+        } else if (i === n) {
+          dot.classList.add('active');
+          dot.innerHTML = i;
+        } else {
+          dot.innerHTML = i;
+        }
+        if (line) {
+          line.classList.toggle('active', i < n);
+        }
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectOption(el, group) {
+      const parent = el.parentElement;
+      parent.querySelectorAll('.option-card, .budget-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function toggleShow(el) {
+      el.classList.toggle('selected');
+    }
+
+    function submitForm() {
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+      document.getElementById('success').classList.add('active');
+
+      for (let i = 1; i <= 5; i++) {
+        const dot = document.getElementById('dot-' + i);
+        dot.classList.remove('active');
+        dot.classList.add('completed');
+        dot.innerHTML = '&#10003;';
+        const line = document.getElementById('line-' + i);
+        if (line) line.classList.add('active');
+      }
+    }
+  </script>
+
+</body>
+</html>
