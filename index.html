@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propuesta — Sistema de Gestión Comercial | Eventos Barcelona</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #c36;
+      --primary-dark: #a02d52;
+      --dark: #1f2124;
+      --gray: #69727d;
+      --light-gray: #f5f5f7;
+      --white: #fff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--dark);
+      line-height: 1.6;
+      background: var(--white);
+    }
+
+    /* === COVER === */
+    .cover {
+      min-height: 100vh;
+      background: var(--dark);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, rgba(204, 51, 102, 0.15) 0%, transparent 60%);
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .cover-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-label {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 40px;
+    }
+
+    .cover h1 {
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .cover h1 span {
+      color: var(--primary);
+    }
+
+    .cover-subtitle {
+      font-size: 20px;
+      font-weight: 300;
+      color: var(--gray);
+      max-width: 500px;
+      margin: 0 auto 60px;
+    }
+
+    .cover-meta {
+      font-size: 14px;
+      color: var(--gray);
+      letter-spacing: 1px;
+    }
+
+    /* === SECTIONS === */
+    .section {
+      padding: 80px 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-dark {
+      background: var(--dark);
+      color: var(--white);
+      max-width: 100%;
+      padding: 80px 40px;
+    }
+
+    .section-dark .section-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-accent {
+      background: var(--light-gray);
+      max-width: 100%;
+      padding: 80px 40px;
+    }
+
+    .section-accent .section-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+
+    .section h2 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    .section-dark h2,
+    .section-accent h2 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    .section p, .section-dark p, .section-accent p {
+      font-size: 17px;
+      color: var(--gray);
+      margin-bottom: 16px;
+      max-width: 700px;
+    }
+
+    .section-dark p {
+      color: #999;
+    }
+
+    /* === PROBLEM / SOLUTION BLOCKS === */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 48px;
+    }
+
+    .problem-card {
+      padding: 32px;
+      border-radius: 12px;
+      background: var(--light-gray);
+    }
+
+    .problem-card.negative {
+      border-left: 4px solid var(--gray);
+    }
+
+    .problem-card.positive {
+      border-left: 4px solid var(--primary);
+      background: rgba(204, 51, 102, 0.05);
+    }
+
+    .problem-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .problem-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .problem-card ul li {
+      font-size: 15px;
+      color: var(--gray);
+      padding: 6px 0;
+      padding-left: 24px;
+      position: relative;
+    }
+
+    .problem-card.negative ul li::before {
+      content: '✕';
+      position: absolute;
+      left: 0;
+      color: var(--gray);
+      font-weight: 700;
+    }
+
+    .problem-card.positive ul li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* === FLOW === */
+    .flow {
+      margin-top: 48px;
+    }
+
+    .flow-step {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 32px;
+      align-items: flex-start;
+    }
+
+    .flow-number {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .flow-content h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--white);
+    }
+
+    .flow-content p {
+      font-size: 15px;
+      color: #999;
+      margin: 0;
+    }
+
+    .flow-time {
+      font-size: 13px;
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    /* === PHASES === */
+    .phases {
+      margin-top: 48px;
+    }
+
+    .phase {
+      margin-bottom: 48px;
+      padding: 40px;
+      border-radius: 16px;
+      background: var(--white);
+      border: 1px solid #e5e5e5;
+    }
+
+    .phase-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .phase-tag {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .phase-time {
+      font-size: 14px;
+      color: var(--gray);
+      background: var(--light-gray);
+      padding: 6px 16px;
+      border-radius: 20px;
+    }
+
+    .phase h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .phase ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .phase ul li {
+      font-size: 15px;
+      color: var(--gray);
+      padding: 8px 0;
+      padding-left: 28px;
+      position: relative;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .phase ul li:last-child {
+      border: none;
+    }
+
+    .phase ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* === PRICING === */
+    .pricing-box {
+      margin-top: 48px;
+      text-align: center;
+    }
+
+    .price-card {
+      display: inline-block;
+      background: var(--white);
+      border-radius: 20px;
+      padding: 48px 64px;
+      border: 2px solid var(--primary);
+      position: relative;
+    }
+
+    .price-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .price-amount {
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .price-amount span {
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--gray);
+    }
+
+    .price-note {
+      font-size: 15px;
+      color: var(--gray);
+      margin-top: 16px;
+    }
+
+    .price-includes {
+      margin-top: 40px;
+      text-align: left;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .price-includes h4 {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--dark);
+      margin-bottom: 16px;
+    }
+
+    .price-includes ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .price-includes ul li {
+      font-size: 15px;
+      color: var(--gray);
+      padding: 8px 0;
+      padding-left: 28px;
+      position: relative;
+    }
+
+    .price-includes ul li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* === MONTHLY COSTS === */
+    .monthly-table {
+      width: 100%;
+      margin-top: 32px;
+      border-collapse: collapse;
+    }
+
+    .monthly-table th {
+      text-align: left;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray);
+      padding: 12px 0;
+      border-bottom: 2px solid #e5e5e5;
+    }
+
+    .monthly-table td {
+      font-size: 15px;
+      padding: 14px 0;
+      border-bottom: 1px solid #f0f0f0;
+      color: var(--gray);
+    }
+
+    .monthly-table td:last-child {
+      text-align: right;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .monthly-table tr:last-child td {
+      border-bottom: none;
+      font-weight: 700;
+      color: var(--dark);
+      font-size: 17px;
+      padding-top: 20px;
+    }
+
+    /* === TIMELINE === */
+    .timeline-bar {
+      display: flex;
+      gap: 4px;
+      margin-top: 48px;
+      margin-bottom: 32px;
+    }
+
+    .timeline-segment {
+      flex: 1;
+      height: 8px;
+      border-radius: 4px;
+      background: var(--primary);
+      opacity: 0.3;
+    }
+
+    .timeline-segment:nth-child(1) { opacity: 1; }
+    .timeline-segment:nth-child(2) { opacity: 0.8; }
+    .timeline-segment:nth-child(3) { opacity: 0.6; }
+    .timeline-segment:nth-child(4) { opacity: 0.4; }
+
+    .timeline-labels {
+      display: flex;
+      gap: 4px;
+    }
+
+    .timeline-label {
+      flex: 1;
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    .timeline-label strong {
+      display: block;
+      color: var(--dark);
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    /* === GUARANTEE === */
+    .guarantee {
+      margin-top: 48px;
+      padding: 32px;
+      border-radius: 12px;
+      border: 1px solid rgba(204, 51, 102, 0.3);
+      background: rgba(204, 51, 102, 0.03);
+    }
+
+    .guarantee h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--dark);
+    }
+
+    .guarantee p {
+      font-size: 15px;
+      color: var(--gray);
+      margin: 0;
+    }
+
+    /* === CTA === */
+    .cta-section {
+      text-align: center;
+      padding: 100px 40px;
+      background: var(--dark);
+      color: var(--white);
+    }
+
+    .cta-section h2 {
+      font-size: 40px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .cta-section p {
+      font-size: 18px;
+      color: var(--gray);
+      max-width: 500px;
+      margin: 0 auto 40px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 16px 48px;
+      background: var(--primary);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .cta-button:hover {
+      background: var(--primary-dark);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 40px;
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .problem-grid { grid-template-columns: 1fr; }
+      .section, .section-dark, .section-accent { padding: 60px 24px; }
+      .phase { padding: 24px; }
+      .price-card { padding: 32px 24px; }
+      .timeline-bar, .timeline-labels { flex-direction: column; gap: 8px; }
+    }
+
+    @media print {
+      .cover { min-height: auto; padding: 80px 40px; }
+      .section, .section-dark, .section-accent { padding: 40px; }
+      .cta-button { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-content">
+      <div class="cover-label">Propuesta de proyecto</div>
+      <h1>Sistema de Gestión<br>Comercial <span>Automatizado</span></h1>
+      <p class="cover-subtitle">Transformar un proceso manual en un sistema operativo estructurado para la gestión de eventos y espectáculos.</p>
+      <p class="cover-meta">Preparado para Eventos Barcelona — Marzo 2026</p>
+    </div>
+  </div>
+
+  <!-- DIAGNÓSTICO -->
+  <div class="section">
+    <div class="section-label">Diagnóstico</div>
+    <h2>Lo que hemos detectado</h2>
+    <p>Después de 14 años de actividad, habéis construido un negocio sólido con una red amplia de artistas, un catálogo diverso de espectáculos y un flujo constante de 2-3 leads diarios. Sin embargo, todo el proceso comercial depende de una sola persona y del correo electrónico.</p>
+
+    <div class="problem-grid">
+      <div class="problem-card negative">
+        <h3>Situación actual</h3>
+        <ul>
+          <li>Leads mezclados con otros emails</li>
+          <li>Clasificación manual de cada solicitud</li>
+          <li>30-45 min por lead para preparar propuesta</li>
+          <li>Seguimiento que depende de la memoria</li>
+          <li>Base de artistas sin estructurar</li>
+          <li>Marketing (Mailchimp) abandonado</li>
+          <li>Imposible delegar a otra persona</li>
+        </ul>
+      </div>
+      <div class="problem-card positive">
+        <h3>Situación objetivo</h3>
+        <ul>
+          <li>Todos los leads centralizados en un CRM</li>
+          <li>Clasificación automática por tipo de evento</li>
+          <li>Propuestas web generadas en minutos</li>
+          <li>Seguimiento automático programado</li>
+          <li>Base de datos de artistas organizada</li>
+          <li>Email marketing integrado y activo</li>
+          <li>Sistema que cualquier persona puede gestionar</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- CÓMO FUNCIONA -->
+  <div class="section-dark">
+    <div class="section-inner">
+      <div class="section-label">Cómo funciona</div>
+      <h2>El flujo automatizado</h2>
+      <p>Esto es lo que ocurre desde que un cliente potencial rellena el formulario de vuestra web hasta que acepta la propuesta.</p>
+
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-number">1</div>
+          <div class="flow-content">
+            <div class="flow-time">Segundo 0</div>
+            <h3>El cliente rellena el formulario inteligente</h3>
+            <p>Un formulario en vuestra web recoge toda la información clave: tipo de evento, tipo de espectáculo, fecha, asistentes, presupuesto. El lead entra al CRM clasificado automáticamente.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-number">2</div>
+          <div class="flow-content">
+            <div class="flow-time">Minuto 1</div>
+            <h3>Se genera una propuesta web personalizada</h3>
+            <p>El sistema selecciona el template adecuado (danza, música, circo o shows especiales) y genera una página web con fotos, vídeos, descripción del show y precio. En castellano o inglés según el cliente.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-number">3</div>
+          <div class="flow-content">
+            <div class="flow-time">Minuto 2</div>
+            <h3>El cliente recibe la propuesta por email</h3>
+            <p>Un email profesional con enlace a la propuesta web. El cliente ve fotos, vídeos, opciones de show + upselling de producción técnica (sonido, iluminación, AV).</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-number">4</div>
+          <div class="flow-content">
+            <div class="flow-time">Minuto 5</div>
+            <h3>Recibes notificación con el resumen</h3>
+            <p>Te llega una alerta: "Nuevo lead cualificado: Cena de gala, 200 pax, Hotel W, 5-10K€, noviembre". Solo revisas si quieres ajustar el margen antes del envío.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-number">5</div>
+          <div class="flow-content">
+            <div class="flow-time">Día 2-5</div>
+            <h3>Seguimiento automático</h3>
+            <p>Si el cliente no responde, se envían recordatorios automáticos espaciados. Tú no tienes que hacer nada ni recordar nada.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-number">6</div>
+          <div class="flow-content">
+            <div class="flow-time">Cuando acepta</div>
+            <h3>Cierre y facturación</h3>
+            <p>El cliente acepta la propuesta desde la web. Se crea automáticamente el registro en Holded para facturar. El pipeline avanza solo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUÉ INCLUYE -->
+  <div class="section">
+    <div class="section-label">Alcance del proyecto</div>
+    <h2>Qué vamos a implementar</h2>
+    <p>Todo lo necesario para pasar del sistema actual basado en email a un sistema comercial automatizado y profesional.</p>
+
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-tag">Fase 1</span>
+          <span class="phase-time">Semana 1</span>
+        </div>
+        <h3>Estructura y fundamentos</h3>
+        <ul>
+          <li>Configuración del CRM: pipeline comercial con etapas (nuevo lead → contactado → propuesta enviada → negociación → cerrado ganado/perdido)</li>
+          <li>Campos personalizados: tipo de evento, tipo de espectáculo, asistentes, presupuesto, fecha, ubicación, idioma</li>
+          <li>Sistema de tags y clasificación automática por categoría (danza, música, circo, shows especiales)</li>
+          <li>Formulario inteligente bilingüe (ES/EN) con lógica condicional</li>
+          <li>Integración del formulario en vuestra web WordPress</li>
+          <li>Configuración de Mailgun + DNS (SPF, DKIM, DMARC) para deliverability óptima</li>
+        </ul>
+      </div>
+
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-tag">Fase 2</span>
+          <span class="phase-time">Semana 2–3</span>
+        </div>
+        <h3>Propuestas web automatizadas</h3>
+        <ul>
+          <li>Diseño de templates de propuesta web por categoría (danza, música, circo, shows especiales)</li>
+          <li>Cada template en castellano e inglés (8 templates en total)</li>
+          <li>Sección de show principal + alternativas + upselling de producción técnica</li>
+          <li>Fotos, vídeos y descripción de cada espectáculo</li>
+          <li>Motor de precios con coste base + margen ajustable antes del envío</li>
+          <li>Workflow: lead clasificado → generación de propuesta → revisión opcional → envío automático</li>
+        </ul>
+      </div>
+
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-tag">Fase 3</span>
+          <span class="phase-time">Semana 3–4</span>
+        </div>
+        <h3>Automatizaciones e integraciones</h3>
+        <ul>
+          <li>Secuencia de seguimiento automático (recordatorios escalonados si no hay respuesta)</li>
+          <li>Notificaciones al responsable para nuevos leads cualificados</li>
+          <li>Integración con Holded: al cerrar un evento, se genera el registro para facturación</li>
+          <li>Conexión de la oficina virtual (email de resumen de llamadas → lead en CRM)</li>
+          <li>Migración de contactos desde Mailchimp (últimos 2-3 años)</li>
+        </ul>
+      </div>
+
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-tag">Fase 4</span>
+          <span class="phase-time">Semana 5–6</span>
+        </div>
+        <h3>Base de artistas, marketing y formación</h3>
+        <ul>
+          <li>Estructura de base de datos de artistas: nombre, categoría, tipo de show, caché, materiales, disponibilidad</li>
+          <li>Formulario de registro para nuevos artistas que quieran colaborar</li>
+          <li>Configuración de campañas de email marketing (templates base)</li>
+          <li>Segmentación automática de contactos por tipo de cliente y tipo de evento</li>
+          <li>Testing completo del sistema end-to-end</li>
+          <li>Sesión de formación para el equipo + documentación de uso</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVERSIÓN -->
+  <div class="section-accent">
+    <div class="section-inner">
+      <div class="section-label">Inversión</div>
+      <h2>Coste del proyecto</h2>
+
+      <div class="pricing-box">
+        <div class="price-card">
+          <div class="price-label">Implementación completa</div>
+          <div class="price-amount">5.000 <span>€</span></div>
+          <div class="price-note">Pago único · Plazo de entrega: 6 semanas</div>
+
+          <div class="price-includes">
+            <h4>Incluye</h4>
+            <ul>
+              <li>CRM completo con pipeline comercial</li>
+              <li>Formulario inteligente bilingüe en la web</li>
+              <li>8 templates de propuestas web (4 categorías × 2 idiomas)</li>
+              <li>Automatizaciones de clasificación, envío y seguimiento</li>
+              <li>Integración con Holded para facturación</li>
+              <li>Configuración de email marketing (sustituyendo Mailchimp)</li>
+              <li>Migración de contactos existentes</li>
+              <li>Base de datos de artistas estructurada</li>
+              <li>Configuración de dominio para email (Mailgun)</li>
+              <li>Sesión de formación + documentación</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 48px;">
+        <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 24px; color: var(--dark);">Coste mensual de herramientas</h3>
+        <p>Estas herramientas las contrata directamente Eventos Barcelona. No están incluidas en el precio del proyecto.</p>
+        <table class="monthly-table">
+          <thead>
+            <tr>
+              <th>Herramienta</th>
+              <th>Coste mensual</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>GoHighLevel (CRM, automatizaciones, propuestas, marketing)</td>
+              <td>~97 €/mes</td>
+            </tr>
+            <tr>
+              <td>Mailgun (envío de emails)</td>
+              <td>~0 – 7 €/mes</td>
+            </tr>
+            <tr>
+              <td>Holded (ya lo tenéis)</td>
+              <td>Ya contratado</td>
+            </tr>
+            <tr>
+              <td><strong>Total estimado</strong></td>
+              <td><strong>~97 – 104 €/mes</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="guarantee">
+        <h3>Qué necesitamos de vosotros para empezar</h3>
+        <p>Los 4 PowerPoints actuales de propuestas (danza, música, circo, shows especiales), el ejemplo de Canva que nos habéis mencionado, la tabla de costes base de artistas (aunque sea aproximada), y acceso al panel de hosting/DNS del dominio. Con estos materiales arrancamos la semana 1.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE VISUAL -->
+  <div class="section">
+    <div class="section-label">Calendario</div>
+    <h2>Hoja de ruta</h2>
+
+    <div class="timeline-bar">
+      <div class="timeline-segment"></div>
+      <div class="timeline-segment"></div>
+      <div class="timeline-segment"></div>
+      <div class="timeline-segment"></div>
+    </div>
+    <div class="timeline-labels">
+      <div class="timeline-label">
+        <strong>Semana 1</strong>
+        CRM, formulario, DNS
+      </div>
+      <div class="timeline-label">
+        <strong>Semana 2–3</strong>
+        Propuestas web y workflows
+      </div>
+      <div class="timeline-label">
+        <strong>Semana 3–4</strong>
+        Automatizaciones e integraciones
+      </div>
+      <div class="timeline-label">
+        <strong>Semana 5–6</strong>
+        Artistas, testing y formación
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>¿Avanzamos?</h2>
+    <p>Estamos listos para empezar a construir vuestro sistema. Solo necesitamos los materiales y el OK para arrancar.</p>
+    <a href="mailto:" class="cta-button">Confirmar proyecto</a>
+  </div>
+
+  <div class="footer">
+    Propuesta preparada en exclusiva para Eventos Barcelona — Marzo 2026
+  </div>
+
+</body>
+</html>
